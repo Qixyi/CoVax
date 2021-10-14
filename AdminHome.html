@@ -15,7 +15,7 @@
       <div class="container-fluid">
           <a class="navbar-brand link-light" href="AdminHome.html"><img src="covidvax.png" alt="This is the CoVax logo" height="50" width="50">
       <p class="h1 align-middle d-inline-block"> CoVax</p></a>
-          <a href="#"><button type="button" class="btn btn-outline-warning">Log Out</button></a>
+          <a href="Login.html"><button type="button" class="btn btn-outline-warning">Log Out</button></a>
       </div>
     </div>
 
@@ -31,7 +31,7 @@
 
 
         <!-- Batch Table -->
-        <table class="table table-hover">
+        <table class="table table-hover" id="batchTable">
             <thead>
               <tr class="light-cyan-color">
                 <th scope="col">Batch No</th>
@@ -40,17 +40,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr data-href="AdminAppointment.html">
                 <th scope="row">B0001</th>
                 <td>Pfizer</td>
-                <td>5</td>
+                <td>3</td>
               </tr>
-              <tr>
+              <tr data-href="AdminAppointment.html">
                 <th scope="row">B0002</th>
                 <td>AstraZeneca</td>
                 <td>10</td>
               </tr>
-              <tr>
+              <tr data-href="AdminAppointment.html">
                 <th scope="row">B0003</th>
                 <td>Sinovac</td>
                 <td>50</td>
@@ -58,5 +58,16 @@
             </tbody>
           </table>
     </div>
+
+    <script type="text/javascript">
+      const allRows = document.querySelectorAll("tr[data-href]");
+
+      allRows.forEach(row => {
+        row.addEventListener("click", () => {
+          window.location.href = row.dataset.href;
+        });
+      });
+      
+    </script>
 </body>
 </html>
