@@ -18,7 +18,7 @@
     <div class="container-fluid">
         <a class="navbar-brand link-light" href="RecordVaccine.html"><img src="covidvax.png" alt="This is the CoVax logo" height="50" width="50">
     <p class="h1 align-middle d-inline-block"> CoVax</p></a>
-        <a href="#"><button type="button" class="btn btn-outline-warning">Log Out</button></a>
+        <a href="Login.php"><button type="button" class="btn btn-outline-warning">Login</button></a>
     </div>
 </div>  
 
