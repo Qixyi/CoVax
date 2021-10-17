@@ -76,7 +76,7 @@
                                aria-label="Close"></button>
                        </div>
                        <div class="modal-body">
-                           <form>
+                           <form > 
                                <div class="row">
                                    <div class=" col-md-8">
                                        <label for="centreName" class="col-md-8">Centre
@@ -154,7 +154,7 @@
               <!--Sign Up Button-->
               <div class="signup-btn text-center mt-3">
                 <input type="button" class="btn btn-primary mb-md-0 mb-5 btn-lg " id="signUpBtn"
-                    value="Sign Up">
+                    value="Sign Up" onclick="location.href = 'Login.php';">
             </div>                 
         </form>
 </div>
