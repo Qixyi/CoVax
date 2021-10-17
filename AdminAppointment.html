@@ -16,7 +16,7 @@
         <div class="container-fluid">
             <a class="navbar-brand link-light" href="AdminHome.html"><img src="covidvax.png" alt="This is the CoVax logo" height="50" width="50">
 				<p class="h1 align-middle d-inline-block"> CoVax</p></a>
-            <a href="#"><button type="button" class="btn btn-outline-warning">Log Out</button></a>
+            <a href="Login.html"><button type="button" class="btn btn-outline-warning">Log Out</button></a>
         </div>
     </div>
 
@@ -52,36 +52,36 @@
 				<div class="card-body text-center">
 					<i class="fas fa-ellipsis-h fa-2x text-primary"></i>
 					<h4 class="card-title mt-2 mb-4">Pending</h4>
-					<h2 class="card-text">10</h2>
+					<h2 class="card-text">3</h2>
 				</div>
 			</div>
 			<div class="card col-lg-2 mx-2">
 				<div class="card-body text-center">
 					<i class="far fa-check-circle fa-2x text-warning"></i>
 					<h4 class="card-title mt-2 mb-4">Confirmed</h4>
-					<h2 class="card-text">50</h2>
+					<h2 class="card-text">3</h2>
 				</div>
 			</div>
 			<div class="card col-lg-2 mx-2">
 				<div class="card-body text-center">
 					<i class="fas fa-syringe fa-2x text-success"></i>
 					<h4 class="card-title mt-2 mb-4">Administered</h4>
-					<h2 class="card-text">110</h2>
+					<h2 class="card-text">3</h2>
 				</div>
 			</div>
 			<div class="card col-lg-2 mx-2">
 				<div class="card-body text-center">
 					<i class="fas fa-times fa-2x text-danger"></i>
 					<h4 class="card-title mt-2 mb-4">Rejected</h4>
-					<h2 class="card-text">5</h2>
+					<h2 class="card-text">3</h2>
 				</div>
 			</div>
 		</div>
 
 		<!-- Pending Table -->
 
-		<h4>Pending <span class="badge bg-secondary">10</span></h4>
-		<table class="table table-hover mb-5">
+		<h4>Pending <span class="badge bg-secondary">3</span></h4>
+		<table class="table table-hover mb-5" id="pendingTable">
 			<thead>
 				<tr class="light-cyan-color">
 					<th scope="col">Vaccination ID</th>
@@ -90,17 +90,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr data-bs-toggle="modal" data-bs-target="#confirmedModal">
 					<th scope="row">V0001</th>
 					<td>25/03/2021</td>
 					<td>pending</td>
 				</tr>
-				<tr>
+				<tr data-bs-toggle="modal" data-bs-target="#confirmedModal">
 					<th scope="row">V0001</th>
 					<td>25/03/2021</td>
 					<td>pending</td>
 				</tr>
-				<tr>
+				<tr data-bs-toggle="modal" data-bs-target="#confirmedModal">
 					<th scope="row">V0001</th>
 					<td>25/03/2021</td>
 					<td>pending</td>
@@ -109,8 +109,8 @@
 		</table>
 
 		<!-- Confirmed Table -->
-		<h4>Confirmed <span class="badge bg-secondary">10</span></h4>
-		<table class="table table-hover mb-5">
+		<h4>Confirmed <span class="badge bg-secondary">3</span></h4>
+		<table class="table table-hover mb-5" id="confirmedTable">
 			<thead>
 				<tr class="light-cyan-color">
 					<th scope="col">Vaccination ID</th>
@@ -119,17 +119,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr data-bs-toggle="modal" data-bs-target="#administeredModal">
 					<th scope="row">V0001</th>
 					<td>25/03/2021</td>
 					<td>confirmed</td>
 				</tr>
-				<tr>
+				<tr data-bs-toggle="modal" data-bs-target="#administeredModal">
 					<th scope="row">V0001</th>
 					<td>25/03/2021</td>
 					<td>confirmed</td>
 				</tr>
-				<tr>
+				<tr data-bs-toggle="modal" data-bs-target="#administeredModal">
 					<th scope="row">V0001</th>
 					<td>25/03/2021</td>
 					<td>confirmed</td>
@@ -138,7 +138,7 @@
 		</table>
 
 		<!-- Administered Table -->
-		<h4>Administered <span class="badge bg-secondary">10</span></h4>
+		<h4>Administered <span class="badge bg-secondary">3</span></h4>
 		<table class="table mb-5">
 			<thead>
 				<tr class="light-cyan-color">
@@ -167,7 +167,7 @@
 		</table>
 
 		<!-- Rejected Table -->
-		<h4>Rejected <span class="badge bg-secondary">10</span></h4>
+		<h4>Rejected <span class="badge bg-secondary">3</span></h4>
 		<table class="table mb-5">
 			<thead>
 				<tr class="light-cyan-color">
@@ -196,10 +196,99 @@
 		</table>
 
 
-		<!-- (DELETE) TEST MODAL : Button trigger -->
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#administeredModal">
-			Launch demo modal
-  		</button>
+		<!-- Confirm Vaccination Appointment Modal -->
+		<div class="modal fade" id="confirmedModal" tabindex="-1" aria-labelledby="confirmedModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				<h5 class="modal-title" id="confirmedModalLabel">Confirm Vaccination Appointment</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<h5>Patient Details</h5>
+					<div class="row">
+						<div class="col-md-4">
+							<h6>Full name: </h6>
+						</div>
+						<div class="col-md-8">
+							<h6 id="confirmedModalFullName">April Young</h6>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h6>IC/Passport: </h6>
+						</div>
+						<div class="col-md-8">
+							<h6 id="confirmedModalICPassport">010555-14-0550</h6>
+						</div>
+					</div>
+					<h5 class="mt-4">Batch Details</h5>
+					<div class="row">
+						<div class="col-md-4">
+							<h6>Batch No: </h6>
+						</div>
+						<div class="col-md-8">
+							<h6 id="confirmedModalBatchNo">B0001</h6>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h6>Expiry Date: </h6>
+						</div>
+						<div class="col-md-8">
+							<h6 id="confirmedModalExpiryDate">25/03/2022</h6>
+						</div>
+					</div>
+					<h5 class="mt-4">Vaccine Details</h5>
+					<div class="row">
+						<div class="col-md-4">
+							<h6>Manufacturer: </h6>
+						</div>
+						<div class="col-md-8">
+							<h6 id="confirmedModalManufacturer">Company A</h6>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h6>Vaccine Name: </h6>
+						</div>
+						<div class="col-md-8">
+							<h6 id="confirmedModalVaccineName">Sinovac</h6>
+						</div>
+					</div>
+					<h4 class="mt-4 light-cyan-color text-center" id="confirmedModalStatus">Status: Pending</h4>
+					<hr>
+					<form>
+						<fieldset class="row mb-3">
+						  <legend class="col-form-label col-sm-4 pt-0">Status : </legend>
+						  <div class="col-sm-8">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="pending" id="flexCheckDefault"
+								data-bs-toggle="collapse" data-bs-target="#confirmedModalRemarksDiv">
+
+								<label class="form-check-label" for="flexCheckDefault">
+								  Confirmed
+								</label>
+							</div>
+						  </div>
+						</fieldset>
+						<!-- Collapsed Remarks Div -->
+						<div class="row mb-3 collapse" id="confirmedModalRemarksDiv">
+							<label for="confirmedModalRemarks" class="col-sm-4 col-form-label">Remarks (optional): </label>
+							<div class="col-sm-8">
+								<textarea class="form-control" id="confirmedModalRemarks" rows="3"></textarea>
+							</div>
+						</div>
+						<div class="text-center">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+							<button type="submit" class="btn btn-primary">Save changes</button>
+						</div>	
+					  </form>
+				</div>
+			</div>
+			</div>
+		</div>
+
 
 		<!-- Record Vaccination Administered Modal -->
 		<div class="modal fade" id="administeredModal" tabindex="-1" aria-labelledby="administeredModalLabel" aria-hidden="true">
@@ -268,24 +357,20 @@
 						  <legend class="col-form-label col-sm-4 pt-0">Status: </legend>
 						  <div class="col-sm-8">
 							<div class="form-check">
-							  <input class="form-check-input" type="radio" name="statusRadio" id="radioConfirmed" value="confirmed" checked>
-							  <label class="form-check-label" for="radioConfirmed">
-								Confirmed
-							  </label>
-							</div>
-							<div class="form-check">
-							  <input class="form-check-input" type="radio" name="statusRadio" id="radioAdministered" value="administered">
-							  <label class="form-check-label" for="radioAdministered">
-								Administered
-							  </label>
+								<input class="form-check-input" type="checkbox" value="administered" id="flexCheckDefault"
+								data-bs-toggle="collapse" data-bs-target="#administeredModalRemarksDiv">
+
+								<label class="form-check-label" for="flexCheckDefault">
+								  Administered
+								</label>
 							</div>
 						  </div>
 						</fieldset>
-						<!-- TODO make invible unless radioAdministered selected-->
-						<div class="row mb-3">
-							<label for="textAreaRemarks" class="col-sm-4 col-form-label">Remarks (optional): </label>
+						<!-- Collapsed Remarks Div -->
+						<div class="row mb-3 collapse" id="administeredModalRemarksDiv">
+							<label for="administeredModalRemarks" class="col-sm-4 col-form-label">Remarks (optional): </label>
 							<div class="col-sm-8">
-								<textarea class="form-control" id="textAreaRemarks" rows="3"></textarea>
+								<textarea class="form-control" id="administeredModalRemarks" rows="3"></textarea>
 							</div>
 						</div>
 						<div class="text-center">

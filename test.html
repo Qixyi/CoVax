@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign Up</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="navbar sticky-top" style="background-color: #002daa;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img src="covidvax.png" alt="This is the CoVax logo" height="60" width="60" class="align-text-top d-inline-block">CoVax</a>
+            <a href="#"><button type="button" class="btn btn-outline-warning">Log Out</button></a>
+        </div>
+    </div>
+    <div class="container">
+
+        <!-- Old Form code (Too Much Flex) -->
+        <form class="p-2 offset-md-2">
+            <!-- Vaccine Details -->
+            <div class="form-group row">
+            <label for="vaccineName" class="pt-2 col-md-3">Vaccine Name: </label>
+            <select class="custom-select col-md-5" required>
+                <option value="">--Please select one--</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            </div>
+            <div class="form-group row mb-5">
+            <label for="vaccineID" class="col-lg-2 col-form-label">Vaccine ID:</label>
+            <div class="col-lg-2">
+                <input type="text" readonly class="form-control-plaintext" id="vaccineID" value="V0001">
+            </div>
+            <label for="manufacturer" class="col-lg-2 col-form-label">Manufacturer:</label>
+            <div class="col-lg-2">
+                <input type="text" readonly class="form-control-plaintext" id="manufacturer" value="Company A">
+            </div>
+            </div>
+
+            <div class="form-group row">
+            <label for="batchNo" class="pt-2 col-md-3">Batch No: </label>
+            <input type="text" class="form-control col-md-5" id="batchNo" placeholder="Batch No" required>
+            </div>
+            <div class="form-group row">
+            <label for="expiryDate" class="pt-2 col-md-3">Expiry Date: </label>
+            <input type="date" class="form-control col-md-5" id="expiryDate" placeholder="Expiry Date" required>
+            </div>
+            <div class="form-group row">
+            <label for="available" class="pt-2 col-md-3">Quantity Available: </label>
+            <input type="number" class="form-control col-md-5" id="available" placeholder="Quantity Available" required>
+            </div>
+            <div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="cancel" class="btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

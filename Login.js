@@ -1,13 +1,30 @@
+// Log in button events
+var loginBtn = document.getElementById("loginBtn");
+loginBtn.addEventListener("click", function (event) {
+  
+  var statusArray = [];
+  statusArray.push(checkUserName());
+  statusArray.push(checkPassword());
+  statusArray.push(checkAccType());
+
+ 
+  if (statusArray.includes(false)) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+}, false);
+
+
 // Check the Username 
 function checkUserName() {
-  var userName = document.getElementById("userName");
-  var userNameValue = userName.value.trim();
+  var username = document.getElementById("username");
+  var usernameValue = username.value.trim();
 
-  if(!userNameValue === ''){
-    addIsValid(userName);
-    return true
+  if(usernameValue != ''){
+    addIsValid(username);
+    return true;
   }else{
-    addIsInvalid(userName)
+    addIsInvalid(username);
     return false;
   }
 }
@@ -18,8 +35,9 @@ function checkPassword() {
   var passwordValue = password.value.trim();
   var regex =  /^[A-Za-z]\w{7,14}$/;
 
-  if(regex.test(password)){
-    addIsValid(passwordValue);
+
+  if(regex.test(passwordValue)){
+    addIsValid(password);
     return true;
   }else{
     addIsInvalid(password);
@@ -27,20 +45,18 @@ function checkPassword() {
   }
 }
 
-// Sign Up button events
-var loginBtn = document.getElementById("loginBtn");
-loginBtn.addEventListener("click", function (event) {
-  var form = document.querySelector('.needs-validation');
-  
-  var statusArray = [];
-  statusArray.push(checkUserName());
-  statusArray.push(checkPassword());
- 
-  if (statusArray.includes(false)) {
-    event.preventDefault();
-    event.stopPropagation();
+// Check selected user account type
+function checkAccType() {
+  var selectAccType = document.getElementById("selectAccType");
+
+  if(selectAccType.value != ""){
+    addIsValid(selectAccType);
+    return true;
+  } else {
+    addIsInvalid(selectAccType);
+    return false;
   }
-}, false);
+}
 
 // Add valid class & removes any invalid class
 function addIsValid(element){
@@ -62,9 +78,4 @@ function addIsInvalid(element){
   if(element.classList.contains("is-valid")){
     element.classList.remove("is-valid");
   }
-}
-
- // To redirect to the next page
-document.getElementById("loginBtn").onclick = function () {
-  location.href = "#"; 
 }
