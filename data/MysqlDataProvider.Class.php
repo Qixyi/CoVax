@@ -18,12 +18,10 @@ class MysqlDataProvider {
             return;
         }
 
-        if($accType === "healthcareAdministrator") {
-            $sql = ('SELECT * FROM Administrator ' + 
-            'WHERE username = :username AND password = :password');
+        if($accType == "healthcareAdministrator") {
+            $sql = ('SELECT * FROM Administrator WHERE username = :username AND password = :password');
         } else {
-            $sql = ('SELECT * FROM Patient WHERE username = :username AND' +
-            ' password = :password');
+            $sql = ('SELECT * FROM Patient WHERE username = :username AND password = :password');
         }
         
         $smt = $db->prepare($sql);
@@ -50,7 +48,7 @@ class MysqlDataProvider {
         $smt = null;
         $db = null;
 
-        return $data;
+        return true;
     }
 
     function selectViewAvailableVaccine() {
@@ -62,7 +60,8 @@ class MysqlDataProvider {
 
         $query = $db->query('SELECT * FROM Vaccine');
 
-        $data = $query->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Vaccine', ['vaccineID', 'manufacturer', 'vaccineName']);
+        $data = $query->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Vaccine', 
+        ['vaccineID', 'manufacturer', 'vaccineName']);
         
         $query = null;
         $db = null;
@@ -124,6 +123,31 @@ class MysqlDataProvider {
         $db = null;
 
         return false;
+    }
+
+    function getCentreNameForAdmin($username) {
+        $db = $this->connect();
+
+        if($db == null) {
+            return;
+        }
+
+        $sql = ('SELECT centreName FROM Administrator WHERE username = :username');
+        
+        $smt = $db->prepare($sql);
+
+        $smt->execute([
+            ':username' => $username
+        ]);
+
+        $data = $smt->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE,
+        'Administrator', ['username', 'password', 'email',
+        'fullName', 'staffID', 'centre']);
+
+        $smt = null;
+        $db = null;
+
+        return $data[0];
     }
 
     // public function get_terms() {

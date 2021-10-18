@@ -1,39 +1,34 @@
 <?php
 
-    // session_start();
+    session_start();
 
     require_once("config.php");
     require_once("Data/MysqlDataProvider.Class.php");
 
-    // $database = new MysqlDataProvider(CONFIG['db']);
+    $database = new MysqlDataProvider(CONFIG['db']);
 
-    // function output($value){
-    //       echo '<pre>';
-    //       print_r($value);
-    //       echo '<pre>';
-    // }
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $accType = $_POST["selectAccType"];
+        $username = trim($_POST["username"]);
+        $password = trim($_POST["password"]);
 
-    // echo($_SERVER['REQUEST_METHOD'] == "POST");
+        $loggedInUser = $database->login($accType, $username, $password);
 
-    // if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    //     $accType = $_POST["selectAccType"];
-    //     $username = trim($_POST["username"]);
-    //     $password = trim($_POST["password"]);
+        if($loggedInUser){
+            $_SESSION['username'] = $username;
 
-    //     echo $accType;
-    //     echo $username;
-    //     echo $password;
-
-    //     output($_POST);
-
-    //     $loggedInUser = $database->login($accType, $username, $password);
-
-    //     if($loggedInUser != false){
-    //         $_SESSION['loggedInUser'] = $loggedInUser;
-    //     } else {
-    //         output("error!");
-    //     }
-    // }
+            if($accType === "healthcareAdministrator") {
+                header("Location: AdminHome.php");
+                die();
+            } else {
+                header("Location: PatientProfile.php");
+                die();
+            }
+            
+        } else {
+            header("Location: Login.php?x=1");
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -55,8 +50,7 @@
         <div class="container-fluid">
             <a class="navbar-brand link-light" href="#"><img src="covidvax.png" alt="This is the CoVax logo" height="50" width="50">
         <p class="h1 align-middle d-inline-block"> CoVax</p></a>
-            <!-- TODO: Add href-->
-            <a href="#"><button type="button" class="btn btn-outline-warning">Sign Up</button></a>
+            <a href="SignUp.php"><button type="button" class="btn btn-outline-warning">Sign Up</button></a>
         </div>
       </div>
 
@@ -86,22 +80,29 @@
                                     <div class="form-floating-mb-3">
                                         <label for="username">Username</label>
                                         <input type="text" class="form-control btn-lg" id="username"
-                                            name="username" placeholder="Username" required>
+                                        name="username" placeholder="Username" required>
                                         <div class="invalid-feedback">Please enter a username.</div>
                                     </div>
                                     <div class="form-floating-mb-3">
                                         <label for="password">Password</label>
                                         <input type="password" class="form-control btn-lg" id="password"
-                                            name="password" placeholder="Password" required>
+                                        name="password" placeholder="Password" required>
                                         <div class="invalid-feedback">Please enter your password [7 to 15 characters
                                             which contain only characters, numeric digits, underscore and first
                                             character must be a letter].</div>
                                     </div>
+                                    <span class="text-danger">
+                                            <?php
+                                            if(isset($_GET['x'])){
+                                            echo "Account not found. Please check your details.";
+                                            unset($_GET['x']);
+                                            }
+                                            ?>
+                                    </span>
                                     
                                     <!--Login Button-->
                                     <div class="login-btn d-flex justify-content-md-start mt-3 justify-content-center">
-                                        <input type="button" class="btn btn-primary mb-md-0 mb-5 btn-lg " id="loginBtn" value="Login"
-                                        onclick="location.href = 'AdminHome.php';">
+                                        <input type="submit" class="btn btn-primary mb-md-0 mb-5 btn-lg " id="loginBtn" value="Login">
                                     </div>                                      
                                 </form>
                             </div>

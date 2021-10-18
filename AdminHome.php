@@ -1,3 +1,18 @@
+<!-- <?php
+// session_start();
+
+// require_once("config.php");
+// require_once("Data/MysqlDataProvider.Class.php");
+
+// print_r($_SESSION['username']);
+
+// $database = new MysqlDataProvider(CONFIG['db']);
+
+// $userData = $database->getCentreNameForAdmin($_SESSION['username']);
+
+
+?> -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
