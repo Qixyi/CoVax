@@ -154,7 +154,7 @@
               <!--Sign Up Button-->
               <div class="signup-btn text-center mt-3">
                 <input type="button" class="btn btn-primary mb-md-0 mb-5 btn-lg " id="signUpBtn"
-                    value="Sign Up" onclick="location.href = 'Login.php';">
+                    value="Sign Up">
             </div>                 
         </form>
 </div>

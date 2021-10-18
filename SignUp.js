@@ -137,7 +137,7 @@ function patientClick() {
     var passwordValue = password.value.trim();
     var regex =  /^[A-Za-z]\w{7,14}$/;
   
-    if(regex.test(password)){
+    if(regex.test(passwordValue)){
       addIsValid(password);
       return true;
     }else{
@@ -226,7 +226,7 @@ function patientClick() {
   
   // To redirect to the next page
   document.getElementById("signUpBtn").onclick = function () {
-    location.href = "#"; 
+    location.href = "Login.php"; 
   }
   
   
