@@ -16,6 +16,24 @@ function patientClick() {
       }
     }
   }
+
+  function checkButton(){
+    if(document.getElementById('flexRadioDefaultAdmin').checked){
+      document.getElementById("display").innerHTML   
+      = document.getElementById("flexRadioDefaultAdmin").value
+      = " Healthcare Administrator radio button is checked";     
+    }
+    else if(document.getElementById('flexRadioDefaultPatient').checked) {   
+      document.getElementById("display").innerHTML   
+          = document.getElementById("flexRadioDefaultPatient").value   
+          ="Patient radio button is checked";     
+  }  
+  else {   
+      document.getElementById("error").innerHTML  
+          = "You have not selected any user";   
+  }   
+  }
+  
   
   //To remove ICPassport
   function adminClick() { 
@@ -55,11 +73,11 @@ function patientClick() {
   var signUpBtn = document.getElementById("signUpBtn");
   signUpBtn.addEventListener("click", function (event) {
   
-    var adminSelected = document.getElementById('flexRadioDefaultPatient').checked;
+    var adminSelected = document.getElementById('flexRadioDefaultAdmin').checked;
   
     var statusArray = [];
     statusArray.push(checkFullName());
-    statusArray.push(checkUserName());
+    statusArray.push(checkUsername());
     statusArray.push(checkPassword());
     statusArray.push(checkEmail());
     if(adminSelected){
@@ -108,25 +126,25 @@ function patientClick() {
     var fullName = document.getElementById("fullName");
     var fullNameValue = fullName.value.trim();
   
-    if(!fullNameValue === ''){
+    if(fullNameValue != ''){
       addIsValid(fullName);
-      return true
+      return true;
     }else{
-      addIsInvalid(fullName)
+      addIsInvalid(fullName);
       return false;
     }
   }
   
   // Check the Username 
-  function checkUserName() {
-    var userName = document.getElementById("userName");
-    var userNameValue = userName.value.trim();
+  function checkUsername() {
+    var username = document.getElementById("username");
+    var usernameValue = username.value.trim();
   
-    if(!userNameValue === ''){
-      addIsValid(userName);
-      return true
+    if(usernameValue != ''){
+      addIsValid(username);
+      return true;
     }else{
-      addIsInvalid(userName)
+      addIsInvalid(username);
       return false;
     }
   }
@@ -181,7 +199,7 @@ function patientClick() {
     var iCPassport = document.getElementById("icPassport");
     var iCPassportValue = iCPassport.value.trim();
   
-    if(!iCPassportValue === ''){
+    if(iCPassportValue != ''){
       addIsValid(iCPassport);
       return true
     }else{
@@ -226,7 +244,7 @@ function patientClick() {
   
   // To redirect to the next page
   document.getElementById("signUpBtn").onclick = function () {
-    location.href = "Login.php"; 
+    location.href = "#"; 
   }
   
   
