@@ -42,6 +42,9 @@
             Patient
         </label>
     </div>
+    <button type="button" onclick=" checkButton()"> Check </button> 
+    <h3 id="display" style="color:green"> </h3>
+    <h3 id="error" style="color:red"> </h3>
    
       <!--Centre Name-->
       <div class="form-floating-mb-3 inline-block mr-2 invisible" id="selectCentre" novalidate>
@@ -118,8 +121,8 @@
                 <div class="invalid-feedback">Please enter your full name</div>
             </div>
             <div class="form-floating-mb-3">
-                <label for="userName">Username</label>
-                <input type="text" class="form-control" id="userName"
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username"
                     placeholder="Username" required>
                 <div class="invalid-feedback">Please enter a username</div>
             </div>
