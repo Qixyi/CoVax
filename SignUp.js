@@ -57,11 +57,9 @@ function patientClick() {
   var createCentreBtn = document.getElementById("createBtn");
   createCentreBtn.addEventListener("click", function (event) {
    
-  
     var statusArray =[];
     statusArray.push(checkCentreName());
     statusArray.push(checkAddress());
-    alert(statusArray);
   
     if (statusArray.includes(false)) {
       event.preventDefault();
@@ -98,7 +96,7 @@ function patientClick() {
     var centreNameTextInput = document.getElementById("centreNameTextInput");
     var centreNameTextInputValue = centreNameTextInput.value.trim();
   
-    if(!centreNameTextInputValue === ''){
+    if(centreNameTextInputValue != ''){
       addIsValid(centreNameTextInput);
       return true;
     }else{
@@ -112,7 +110,7 @@ function patientClick() {
     var address = document.getElementById("address");
     var addressValue = address.value.trim();
   
-    if(!addressValue === ''){
+    if(addressValue != ''){
       addIsValid(address);
       return true;
     }else{
@@ -211,7 +209,7 @@ function patientClick() {
   
   // Check if the Healthcare Administrator selects the Healthcare Centre
   function checkSelectCentre(){
-  var selectCentre = document.getElementById("centreName");
+  var selectCentre = document.getElementById("selectCentreName");
   if(selectCentre.value != ""){
     addIsValid(selectCentre);
     return true;
@@ -243,9 +241,9 @@ function patientClick() {
   }
   
   // To redirect to the next page
-  document.getElementById("signUpBtn").onclick = function () {
-    location.href = "Login.php"; 
-  }
+  // document.getElementById("signUpBtn").onclick = function () {
+  //   location.href = "Login.php"; 
+  // }
   
   
   
