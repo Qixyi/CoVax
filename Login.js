@@ -5,8 +5,6 @@ loginBtn.addEventListener("click", function (event) {
   var statusArray = [];
   statusArray.push(checkUserName());
   statusArray.push(checkPassword());
-  statusArray.push(checkAccType());
-
  
   if (statusArray.includes(false)) {
     event.preventDefault();
@@ -29,6 +27,7 @@ function checkUserName() {
   }
 }
 
+
 // Check the Password format is valid
 function checkPassword() {
   var password = document.getElementById("password");
@@ -45,18 +44,6 @@ function checkPassword() {
   }
 }
 
-// Check selected user account type
-function checkAccType() {
-  var selectAccType = document.getElementById("selectAccType");
-
-  if(selectAccType.value != ""){
-    addIsValid(selectAccType);
-    return true;
-  } else {
-    addIsInvalid(selectAccType);
-    return false;
-  }
-}
 
 // Add valid class & removes any invalid class
 function addIsValid(element){
@@ -68,6 +55,7 @@ function addIsValid(element){
     element.classList.remove("is-invalid");
   }
 }
+
 
 // Add invalid class & removes any valid class
 function addIsInvalid(element){

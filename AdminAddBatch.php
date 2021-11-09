@@ -1,24 +1,30 @@
 <?php
-
 session_start();
-// function output($value){
-//   echo '<pre>';
-//   print_r($value);
-//   echo '<pre>';
-// }
-
-// if($_SERVER['REQUEST_METHOD'] == "POST") {
-//   output($_POST);
-// }
 
 require_once("config.php");
-require_once("data/HealthcareCentre.Class.php");
-require_once("data/Administrator.Class.php");
-require_once("data/Vaccine.Class.php");
-require_once("data/Batch.Class.php");
-require_once("data/MysqlDataProvider.Class.php");
 
+$user = unserialize($_SESSION['user']);
 $database = new MysqlDataProvider(CONFIG['db']);
+$status = true;
+
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+  $batchNo = trim($_POST['batchNo']);
+  $expiryDate = trim($_POST['expiryDate']);
+  $qtyAvailable = trim($_POST['qtyAvailable']);
+  $qtyAdministered = 0;
+  $vaccineID = trim($_POST['vaccineName']);
+  $centreName = $user->getCentreName();
+
+  if($database->validBatchNo($batchNo)){
+      $database->recordNewBatch($batchNo, $expiryDate, $qtyAvailable, $qtyAdministered, $vaccineID, $centreName);
+      $database = null;
+      header("Location: AdminHome.php");
+      exit;
+  } else {
+      $status = false;
+  } 
+}
 
 ?>
 
@@ -66,14 +72,14 @@ $database = new MysqlDataProvider(CONFIG['db']);
       <br>
 
       <!-- Form -->
-      <form method="post" action="CreateBatch.php" class="row needs-validation" novalidate>
+      <form method="POST" class="row needs-validation" novalidate>
         <div class="col-md-8 offset-md-2">
             <div class="row mb-3">
               <label for="vaccineName" class="pt-2 col-lg-3">Vaccine Name: </label>
               <div class="col-lg-9">
                   <select class="form-select" id="vaccineName" name="vaccineName" required>
                       <option selected disabled value="">Choose...</option>
-                      <?php $vaccineArray = $database->selectViewAvailableVaccine();
+                      <?php $vaccineArray = $database->getVaccines();
                         foreach($vaccineArray as $vaccine):?>
                           <option value="<?php echo $vaccine->getVaccineID(); ?>">
                           <?php echo $vaccine->getVaccineName(); ?></option>;
@@ -106,9 +112,10 @@ $database = new MysqlDataProvider(CONFIG['db']);
                       </div>
                       <span class="text-danger">
                         <?php
-                        if(isset($_GET['x'])){
+                        if($status == false){
                           echo "Please enter a new Batch No. Existing Batch No is already chosen.";
-                          }
+                          unset($status);
+                        }
                         ?>
                       </span>
                 </div>

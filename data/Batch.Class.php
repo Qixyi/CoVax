@@ -2,42 +2,20 @@
 
 class Batch {
 
-    function __construct($batchNo, $expiryDate, $quantityAvailable, 
-    $quantityAdministered, $vaccineID) {
-        $this->batchNo = $batchNo;
-        $this->expiryDate = $expiryDate;
-        $this->quantityAvailable = $quantityAvailable;
-        $this->quantityAdministered = $quantityAdministered;
-        $this->vaccineID = $vaccineID;
-    }
+    private $batchNo;
+    private $expiryDate;
+    private $quantityAvailable;
+    private $quantityAdministered;
+    private $vaccineID;
+    private $centreName;
 
-    // function __construct() {
-    //     $arguments = func_get_args();
-    //     $numberOfArguments = func_num_args();
-  
-    //     if (method_exists($this, $function = 
-    //             '__construct'.$numberOfArguments)) {
-    //         call_user_func_array(
-    //                     array($this, $function), $arguments);
-    //     }
-    // }
-
-    // function __construct4($batchNo, $expiryDate, $quantityAvailable, $vaccine) {
-    //     $this->batchNo = $batchNo;
-    //     $this->expiryDate = $expiryDate;
-    //     $this->quantityAvailable = $quantityAvailable;
-    //     $this->quantityAdministered = 0;
-    //     $this->vaccine = $vaccine;
-    // }
-
-    // function __construct5($batchNo, $expiryDate, $quantityAvailable, 
-    //     $quantityAdministered, $vaccine) {
-        
+    // function __construct($batchNo, $expiryDate, $quantityAvailable, 
+    // $quantityAdministered, $vaccineID) {
     //     $this->batchNo = $batchNo;
     //     $this->expiryDate = $expiryDate;
     //     $this->quantityAvailable = $quantityAvailable;
     //     $this->quantityAdministered = $quantityAdministered;
-    //     $this->vaccine = $vaccine;
+    //     $this->vaccineID = $vaccineID;
     // }
 
     function getBatchNo(){
@@ -60,6 +38,10 @@ class Batch {
         return $this->vaccineID;
     }
 
+    function getCentreName(){
+        return $this->centreName;
+    }
+
     function setBatchNo($batchNo){
         $this->batchNo = $batchNo;
     }
@@ -78,6 +60,10 @@ class Batch {
 
     function setVaccineID($vaccineID){
         $this->vaccineID = $vaccineID;
+    }
+
+    function setCentreName($centreName){
+        $this->centreName = $centreName;
     }
 
 }

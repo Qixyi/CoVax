@@ -3,30 +3,31 @@
     session_start();
 
     require_once("config.php");
-    require_once("Data/MysqlDataProvider.Class.php");
 
     $database = new MysqlDataProvider(CONFIG['db']);
-
+    $status = true;
+    
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        $accType = $_POST["selectAccType"];
         $username = trim($_POST["username"]);
         $password = trim($_POST["password"]);
 
-        $loggedInUser = $database->login($accType, $username, $password);
+        $loggedInUser = $database->login($username, $password);
 
-        if($loggedInUser){
-            $_SESSION['username'] = $username;
+        // print_r($loggedInUser);
 
-            if($accType === "healthcareAdministrator") {
+        if($loggedInUser != false){
+            $_SESSION['user'] = serialize($loggedInUser);
+
+            if($loggedInUser instanceof Administrator) {
                 header("Location: AdminHome.php");
-                die();
+                exit();
             } else {
                 header("Location: PatientProfile.php");
-                die();
+                exit();
             }
-            
+                
         } else {
-            header("Location: Login.php?x=1");
+            $status = false;
         }
     }
 ?>
@@ -69,15 +70,6 @@
                                     <h1 class="text-md-start text-center">Login</h1>
                                     <!--Login Form--> 
                                     <div class="form-floating-mb-3">
-                                        <label>User Account Type</label>
-                                        <select class="form-select btn-lg" id="selectAccType" name="selectAccType">
-                                            <option selected disabled value="">Choose here...</option>
-                                            <option value="healthcareAdministrator">Healthcare Administrator</option>
-                                            <option value="patient">Patient</option>
-                                        </select>
-                                        <div class="invalid-feedback">Please select an account type.</div>
-                                    </div>
-                                    <div class="form-floating-mb-3">
                                         <label for="username">Username</label>
                                         <input type="text" class="form-control btn-lg" id="username"
                                         name="username" placeholder="Username" required>
@@ -93,10 +85,14 @@
                                     </div>
                                     <span class="text-danger">
                                             <?php
-                                            if(isset($_GET['x'])){
-                                            echo "Account not found. Please check your details.";
-                                            unset($_GET['x']);
+                                            if($status == false){
+                                                echo "Account not found. Please check your details.";
+                                                unset($status);
                                             }
+                                            // if(isset($_GET['x'])){
+                                            //     echo "Account not found. Please check your details.";
+                                            //     unset($_GET['x']);
+                                            // }
                                             ?>
                                     </span>
                                     

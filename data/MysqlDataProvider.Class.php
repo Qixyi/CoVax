@@ -11,19 +11,16 @@ class MysqlDataProvider {
         $this->source = $source;
     }
 
-    function login($accType, $username, $password) {
+    // Checks if user is valid. Returns user object if exists, else returns false.
+    // USED in Login.php
+    function login($username, $password) {
         $db = $this->connect();
 
         if($db == null) {
             return;
         }
 
-        if($accType == "healthcareAdministrator") {
-            $sql = ('SELECT * FROM Administrator WHERE username = :username AND password = :password');
-        } else {
-            $sql = ('SELECT * FROM Patient WHERE username = :username AND password = :password');
-        }
-        
+        $sql = ('SELECT * FROM Administrator WHERE username = :username AND password = :password');
         $smt = $db->prepare($sql);
 
         $smt->execute([
@@ -31,27 +28,32 @@ class MysqlDataProvider {
             ':password' => $password
         ]);
 
-        if($accType === "healthcareAdministrator") {
-            $data = $smt->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE,
-            'Administrator', ['username', 'password', 'email',
-            'fullName', 'staffID', 'centre']);
-        } else {
-            $data = $smt->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE,
-            'Patient', ['username', 'password', 'email',
-            'fullName', 'ICPassport']);
-        }
+        $data = $smt->fetchObject('Administrator');
+        if($data == false) {
+            $sql = ('SELECT * FROM Patient WHERE username = :username AND password = :password');
+            $smt = $db->prepare($sql);
 
-        if(empty($data)){
-            return false;
+            $smt->execute([
+                ':username' => $username,
+                ':password' => $password
+            ]);
+
+            $data = $smt->fetchObject('Patient');
         }
 
         $smt = null;
         $db = null;
 
-        return true;
+        if(empty($data)){
+            return;
+        }
+
+        return $data;
     }
 
-    function selectViewAvailableVaccine() {
+    // Returns all vaccine objects
+    // USED in AdminAddBatch.php
+    function getVaccines() {
         $db = $this->connect();
 
         if($db == null) {
@@ -60,8 +62,7 @@ class MysqlDataProvider {
 
         $query = $db->query('SELECT * FROM Vaccine');
 
-        $data = $query->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'Vaccine', 
-        ['vaccineID', 'manufacturer', 'vaccineName']);
+        $data = $query->fetchAll(PDO::FETCH_CLASS, 'Vaccine');
         
         $query = null;
         $db = null;
@@ -70,17 +71,43 @@ class MysqlDataProvider {
     }
 
 
-    function recordNewBatch($batchNo, $expiryDate, $quantityAvailable, 
-    $quantityAdministered, $vaccineID) {
+    // Search for a Vaccine object. Returns a Vaccine object if exists, else returns false
+    // USED in AdminHome.php
+    function getVaccineById($vaccineID) {
         $db = $this->connect();
 
         if($db == null) {
             return;
         }
 
-        $sql = 'INSERT INTO Batch (batchNo, expiryDate, quantityAvailable, quantityAdministered, vaccineID)
+        $sql = ('SELECT * FROM Vaccine WHERE vaccineID = :vaccineID');
+        $smt = $db->prepare($sql);
+
+        $smt->execute([
+            ':vaccineID' => $vaccineID
+        ]);
+
+        $data = $smt->fetchObject('Vaccine');
+        $smt = null;
+        $db = null;
+
+        return $data;
+    }
+
+
+    // Inserts new batch into db
+    // USED in AdminAddBatch.php
+    function recordNewBatch($batchNo, $expiryDate, $quantityAvailable, 
+    $quantityAdministered, $vaccineID, $centreName) {
+        $db = $this->connect();
+
+        if($db == null) {
+            return;
+        }
+
+        $sql = 'INSERT INTO Batch (batchNo, expiryDate, quantityAvailable, quantityAdministered, vaccineID, centreName)
                 VALUES (:batchNo, :expiryDate, :quantityAvailable, 
-                :quantityAdministered, :vaccineID)';
+                :quantityAdministered, :vaccineID, :centreName)';
 
         $smt = $db->prepare($sql);
 
@@ -89,13 +116,16 @@ class MysqlDataProvider {
             ':expiryDate' => $expiryDate,
             ':quantityAvailable' => $quantityAvailable,
             ':quantityAdministered' => $quantityAdministered,
-            ':vaccineID' => $vaccineID
+            ':vaccineID' => $vaccineID,
+            ':centreName' => $centreName
         ]);
 
         $smt = null;
         $db = null;
     }
 
+    // Checks if batchNo exists. Returns true if batchNo does NOT exist, else returns false.
+    // USED in AdminAddBatch.php
     function validBatchNo($batchNo) {
         $db = $this->connect();
 
@@ -111,9 +141,7 @@ class MysqlDataProvider {
             ':batchNo' => $batchNo
         ]);
 
-        $data = $smt->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE,
-        'Batch', ['batchNo', 'expiryDate', 'quantityAvailable', 
-        'quantityAdministered', 'vaccineID']);
+        $data = $smt->fetchAll(PDO::FETCH_CLASS,'Batch');
 
         if(empty($data)){
             return true;
@@ -125,29 +153,30 @@ class MysqlDataProvider {
         return false;
     }
 
-    function getCentreNameForAdmin($username) {
+
+    // not done!!!
+    // USED in AdminHome.php
+    function getBatches($centreName) {
         $db = $this->connect();
 
         if($db == null) {
-            return;
+            return [];
         }
 
-        $sql = ('SELECT centreName FROM Administrator WHERE username = :username');
-        
-        $smt = $db->prepare($sql);
+        $sql = ('SELECT * FROM Batch WHERE centreName = :centreName');
 
-        $smt->execute([
-            ':username' => $username
+        $query = $db->prepare($sql);
+
+        $query->execute([
+            ':centreName' => $centreName
         ]);
 
-        $data = $smt->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE,
-        'Administrator', ['username', 'password', 'email',
-        'fullName', 'staffID', 'centre']);
+        $data = $query->fetchAll(PDO::FETCH_CLASS, 'Batch');
 
-        $smt = null;
+        $query = null;
         $db = null;
 
-        return $data[0];
+        return $data;
     }
 
     // public function get_terms() {

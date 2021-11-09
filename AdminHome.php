@@ -1,17 +1,13 @@
-<!-- <?php
-// session_start();
+<?php
+session_start();
 
-// require_once("config.php");
-// require_once("Data/MysqlDataProvider.Class.php");
+require_once("config.php");
 
-// print_r($_SESSION['username']);
-
-// $database = new MysqlDataProvider(CONFIG['db']);
-
-// $userData = $database->getCentreNameForAdmin($_SESSION['username']);
+$user = unserialize($_SESSION['user']);
+$database = new MysqlDataProvider(CONFIG['db']);
 
 
-?> -->
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,11 +33,11 @@
     <!-- Main Content -->
     <div class="container">
         <br>
-        <h2 class="text-center text-uppercase">JPJ Hospital</h2>
+        <h2 class="text-center text-uppercase"><?php echo $user->getCentreName(); ?></h2>
 
         <section class="my-5">
             <a href="AdminAddBatch.php"><button type="button" class="btn top-nav-blue text-white">Add Batch</button></a>
-            <p class="d-inline-block">110 Batches; 14 Pending Appointments</p>
+            <p class="d-inline-block"><?php echo count($database->getBatches($user->getCentreName())) ?> Batch; 14 Pending Appointments</p>
         </section>
 
 
@@ -55,21 +51,22 @@
               </tr>
             </thead>
             <tbody>
-              <tr data-href="AdminAppointment.html">
+              <?php 
+                $batchArray = $database->getBatches($user->getCentreName());
+                foreach($batchArray as $batch):
+                  $vaccine = $database->getVaccineById($batch->getVaccineID());
+              ?>
+                <tr data-href="AdminAppointment.html">
+                  <th scope="row"><?php echo $batch->getBatchNo() ?></th>
+                  <td><?php echo $vaccine->getVaccineName() ?></td>
+                  <td>3</td>
+                </tr>
+              <?php endforeach;?>
+              <!-- <tr data-href="AdminAppointment.html">
                 <th scope="row">B0001</th>
                 <td>Pfizer</td>
                 <td>3</td>
-              </tr>
-              <tr data-href="AdminAppointment.html">
-                <th scope="row">B0002</th>
-                <td>AstraZeneca</td>
-                <td>10</td>
-              </tr>
-              <tr data-href="AdminAppointment.html">
-                <th scope="row">B0003</th>
-                <td>Sinovac</td>
-                <td>50</td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
     </div>

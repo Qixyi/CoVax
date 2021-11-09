@@ -2,12 +2,16 @@
 
 class Vaccine {
 
-    function __construct($vaccineID, $manufacturer, $vaccineName) {
-        $this->vaccineID = $vaccineID;
-        $this->manufacturer = $manufacturer;
-        $this->vaccineName = $vaccineName;
-        $this->vaccineBatches = [];
-    }
+    private $vaccineID;
+    private $manufacturer;
+    private $vaccineName;
+
+    // function __construct($vaccineID, $manufacturer, $vaccineName) {
+    //     $this->vaccineID = $vaccineID;
+    //     $this->manufacturer = $manufacturer;
+    //     $this->vaccineName = $vaccineName;
+    //     $this->vaccineBatches = [];
+    // }
 
     function getVaccineID(){
         return $this->vaccineID;
@@ -21,9 +25,9 @@ class Vaccine {
         return $this->vaccineName;
     }
 
-    function getVaccineBatches(){
-        return $this->vaccineBatches;
-    }
+    // function getVaccineBatches(){
+    //     return $this->vaccineBatches;
+    // }
 
     function setVaccineID($vaccineID){
         $this->vaccineID = $vaccineID;
@@ -37,13 +41,13 @@ class Vaccine {
         $this->vaccineName = $vaccineName;
     }
 
-    function setVaccineBatches($vaccineBatches){
-        $this->vaccineBatches = $vaccineBatches;
-    }
+    // function setVaccineBatches($vaccineBatches){
+    //     $this->vaccineBatches = $vaccineBatches;
+    // }
 
-    function addVaccineBatches($batch){
-        $tempBatchList = $this->getVaccineBatches();
-        array_push($tempBatchList, $batch);
-        $this->setVaccineBatches($tempBatchList);
-    }
+    // function addVaccineBatches($batch){
+    //     $tempBatchList = $this->getVaccineBatches();
+    //     array_push($tempBatchList, $batch);
+    //     $this->setVaccineBatches($tempBatchList);
+    // }
 }
