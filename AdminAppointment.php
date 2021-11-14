@@ -16,7 +16,7 @@ if(!isset($_GET['batchNo'])) {
 }
 
 // Get batch from database
-$batchObj = $database->getBatch($_GET['batchNo']);
+$batchObj = $database->getBatchByNo($_GET['batchNo']);
 
 // Check if batch object is empty 
 // OR batch's centreName does not match admin's centreName
@@ -30,7 +30,9 @@ if(empty($vaccinationArray)) {
 	$noVaccination = true;
 }
 
-print_r($vaccinationArray);
+unset($_SESSION['url']);
+// Set URL for Administer.php to come back to this page
+$_SESSION['url'] = "AdminAppointment.php?batchNo=" . $_GET['batchNo'];
 ?>
 
 <!DOCTYPE html>
@@ -122,7 +124,7 @@ print_r($vaccinationArray);
 			</div>
 		</div>
 
-		<!-- Pending Table -->
+		<!-- Vaccinations Table -->
 
 		<table class="table mb-5" id="appointmentsTable">
 			<thead>
@@ -142,10 +144,14 @@ print_r($vaccinationArray);
 								echo "<td>" . $vax->getAppointmentDate() . "</td>";
 								echo "<td>" . $vax->getStatus() . "</td>";
 
-								if(strcasecmp($vax->getStatus(), "pending") == 0 ||
-								strcasecmp($vax->getStatus(), "confirmed") == 0) {
-									echo "<td><button class='btn btn-primary btn-sm' data-bs-toggle='modal'
-								 data-bs-target='#confirmedModal' id='" . $vax->getVaccinationID() . "'>Update</button></td>";
+								if(strcasecmp($vax->getStatus(), "pending") == 0) {
+									echo "<td><button class='btn btn-primary btn-sm'
+								 	 value='" . $vax->getVaccinationID() .
+									"' name='statusPending'>Update</button></td>";
+								} else if(strcasecmp($vax->getStatus(), "confirmed") == 0) {
+									echo "<td><button class='btn btn-primary btn-sm'
+								 	 value='" . $vax->getVaccinationID() .
+									"' name='statusConfirmed'>Update</button></td>";
 								} else {
 									echo "<td></td>";
 								}
@@ -161,36 +167,6 @@ print_r($vaccinationArray);
 				echo "<h4 class='text-center text-secondary'> No vaccinations found </h4>";
             endif;
           ?>
-
-		<!-- Confirmed Table -->
-		<h4>Confirmed <span class="badge bg-secondary">3</span></h4>
-		<table class="table table-hover mb-5" id="confirmedTable">
-			<thead>
-				<tr class="light-cyan-color">
-					<th scope="col">Vaccination ID</th>
-					<th scope="col">Appointment Date</th>
-					<th scope="col">Status</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr data-bs-toggle="modal" data-bs-target="#administeredModal">
-					<th scope="row">VAX0004</th>
-					<td>18/10/2021</td>
-					<td>confirmed</td>
-				</tr>
-				<tr data-bs-toggle="modal" data-bs-target="#administeredModal">
-					<th scope="row">VAX0006</th>
-					<td>11/09/2021</td>
-					<td>confirmed</td>
-				</tr>
-				<tr data-bs-toggle="modal" data-bs-target="#administeredModal">
-					<th scope="row">VAX0007</th>
-					<td>15/10/2021</td>
-					<td>confirmed</td>
-				</tr>
-			</tbody>
-		</table>
-
 
 		<!-- Confirm Vaccination Appointment Modal -->
 		<div class="modal fade" id="confirmedModal" tabindex="-1" 
