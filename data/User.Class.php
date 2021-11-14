@@ -7,14 +7,6 @@ abstract class User {
     protected $email;
     protected $fullName;
 
-    // function __construct($username, $password, $email, $fullName) {
-
-    //     $this->username = $username;
-    //     $this->password = $password;
-    //     $this->email = $email;
-    //     $this->fullName = $fullName;
-    // }
-
     function getUsername(){
         return $this->username;
     }

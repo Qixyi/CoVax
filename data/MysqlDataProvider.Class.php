@@ -1,14 +1,35 @@
 <?php
 
 require_once("config.php");
-require_once("Vaccine.Class.php");
-require_once("Batch.Class.php");
-require_once("Administrator.Class.php");
-require_once("Patient.Class.php");
 
 class MysqlDataProvider {
     function __construct($source) {
         $this->source = $source;
+    }
+
+    function signUpPatient($username, $password, $fullName, $email, $ICPassport) {
+        $db = $this->connect();
+
+        if($db == null) {
+            return;
+        }
+
+        $sql = 'INSERT INTO Patient (username, password, fullName, email, ICPassport)
+                VALUES (:username, :password, :fullName, 
+                :email, :ICPassport)';
+
+        $smt = $db->prepare($sql);
+
+        $smt->execute([
+            ':username' => $username,
+            ':password' => $password,
+            ':fullName' => $fullName,
+            ':email' => $email,
+            ':ICPassport' => $ICPassport
+        ]);
+
+        $smt = null;
+        $db = null;
     }
 
     // Checks if user is valid. Returns user object if exists, else returns false.
@@ -72,7 +93,7 @@ class MysqlDataProvider {
 
 
     // Search for a Vaccine object. Returns a Vaccine object if exists, else returns false
-    // USED in AdminHome.php
+    // USED in AdminHome.php, AdministerAppt.php
     function getVaccineById($vaccineID) {
         $db = $this->connect();
 
@@ -124,9 +145,9 @@ class MysqlDataProvider {
         $db = null;
     }
 
-    // Checks if batchNo exists. Returns true if batchNo does NOT exist, else returns false.
-    // USED in AdminAddBatch.php
-    function validBatchNo($batchNo) {
+    // Checks if batchNo exists. Returns batch object if exist, else returns false.
+    // USED in AdminAddBatch.php, AdminAppointment.php, AdministerAppt.php
+    function getBatchByNo($batchNo) {
         $db = $this->connect();
 
         if($db == null) {
@@ -141,20 +162,16 @@ class MysqlDataProvider {
             ':batchNo' => $batchNo
         ]);
 
-        $data = $smt->fetchAll(PDO::FETCH_CLASS,'Batch');
-
-        if(empty($data)){
-            return true;
-        }
+        $data = $smt->fetchObject('Batch');
 
         $smt = null;
         $db = null;
 
-        return false;
+        return $data;
     }
 
 
-    // not done!!!
+    // Get batches based on a centreName. Returns an array of Batch objects.
     // USED in AdminHome.php
     function getBatches($centreName) {
         $db = $this->connect();
@@ -174,6 +191,80 @@ class MysqlDataProvider {
         $data = $query->fetchAll(PDO::FETCH_CLASS, 'Batch');
 
         $query = null;
+        $db = null;
+
+        return $data;
+    }
+
+
+    // Get vaccinations based on a batchNo. Returns an array of Vaccination objects.
+    // USED in AdminAppointment.php
+    function getVaccinations($batchNo) {
+        $db = $this->connect();
+
+        if($db == null) {
+            return [];
+        }
+
+        $sql = ('SELECT * FROM Vaccination WHERE batchNo = :batchNo');
+
+        $query = $db->prepare($sql);
+
+        $query->execute([
+            ':batchNo' => $batchNo
+        ]);
+
+        $data = $query->fetchAll(PDO::FETCH_CLASS, 'Vaccination');
+
+        $query = null;
+        $db = null;
+
+        return $data;
+    }
+
+    // Get a vaccination object based on vaccinationID. Returns the object if exists, else returns false
+    // USED in AdministerAppt.php
+    function getVaccinationById($vaccinationID) {
+        $db = $this->connect();
+
+        if($db == null) {
+            return;
+        }
+
+        $sql = ('SELECT * FROM Vaccination WHERE vaccinationID = :vaccinationID');
+        
+        $smt = $db->prepare($sql);
+
+        $smt->execute([
+            ':vaccinationID' => $vaccinationID
+        ]);
+
+        $data = $smt->fetchObject('Vaccination');
+
+        $smt = null;
+        $db = null;
+
+        return $data;
+    }
+
+    function getPatientByUsername($username) {
+        $db = $this->connect();
+
+        if($db == null) {
+            return;
+        }
+
+        $sql = ('SELECT * FROM Patient WHERE username = :username');
+        
+        $smt = $db->prepare($sql);
+
+        $smt->execute([
+            ':username' => $username
+        ]);
+
+        $data = $smt->fetchObject('Patient');
+
+        $smt = null;
         $db = null;
 
         return $data;

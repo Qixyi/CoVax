@@ -9,15 +9,6 @@ class Batch {
     private $vaccineID;
     private $centreName;
 
-    // function __construct($batchNo, $expiryDate, $quantityAvailable, 
-    // $quantityAdministered, $vaccineID) {
-    //     $this->batchNo = $batchNo;
-    //     $this->expiryDate = $expiryDate;
-    //     $this->quantityAvailable = $quantityAvailable;
-    //     $this->quantityAdministered = $quantityAdministered;
-    //     $this->vaccineID = $vaccineID;
-    // }
-
     function getBatchNo(){
         return $this->batchNo;
     }

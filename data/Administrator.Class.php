@@ -6,12 +6,6 @@ class Administrator extends User {
 
     private $staffID;
     private $centreName;
-    // function __construct($username, $password, $email,
-    //     $fullName, $staffID, $centre) {
-    //     parent::__construct($username, $password, $email, $fullName);
-    //     $this->staffID = $staffID;
-    //     $this->centre = $centre;
-    // }
 
     function getStaffID(){
         return $this->staffID;
