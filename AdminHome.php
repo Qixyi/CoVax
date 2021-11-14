@@ -3,6 +3,8 @@ session_start();
 
 require_once("config.php");
 
+isUserLoggedIn();
+
 $user = unserialize($_SESSION['user']);
 $database = new MysqlDataProvider(CONFIG['db']);
 
@@ -53,15 +55,23 @@ $database = new MysqlDataProvider(CONFIG['db']);
             <tbody>
               <?php 
                 $batchArray = $database->getBatches($user->getCentreName());
-                foreach($batchArray as $batch):
-                  $vaccine = $database->getVaccineById($batch->getVaccineID());
+
+                if(!empty($batchArray)):
+                  foreach($batchArray as $batch):
+                    $vaccine = $database->getVaccineById($batch->getVaccineID());
               ?>
-                <tr data-href="AdminAppointment.html">
-                  <th scope="row"><?php echo $batch->getBatchNo() ?></th>
-                  <td><?php echo $vaccine->getVaccineName() ?></td>
+                <tr data-href="AdminAppointment.php?batchNo=<?php echo $batch->getBatchNo(); ?>">
+                  <th scope="row"><?php echo $batch->getBatchNo(); ?></th>
+                  <td><?php echo $vaccine->getVaccineName(); ?></td>
                   <td>3</td>
                 </tr>
-              <?php endforeach;?>
+              <?php 
+                endforeach;
+                
+                else:
+                  $noBatch = true;
+                endif;
+              ?>
               <!-- <tr data-href="AdminAppointment.html">
                 <th scope="row">B0001</th>
                 <td>Pfizer</td>
@@ -69,6 +79,13 @@ $database = new MysqlDataProvider(CONFIG['db']);
               </tr> -->
             </tbody>
           </table>
+
+          <?php
+            if(isset($noBatch)): 
+              echo "<h4 class='text-center text-secondary'> No batches found </h4>";
+              unset($noBatch);
+            endif;
+          ?>
     </div>
 
     <script type="text/javascript">
