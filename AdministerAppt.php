@@ -23,6 +23,20 @@ if(isset($_GET['vaccinationID'])) {
 } else {
   redirect("AdminHome.php");
 }
+
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $remarks = trim($_POST['administeredRemarks']);
+  $database->updateVaccinationStatus($vaccinationObj->getVaccinationID(), "administered", $remarks);
+  $database->updateBatchQuantity($vaccinationObj->getBatchNo(),
+              $batchObj->getQuantityAvailable() - 1, $batchObj->getQuantityAdministered() + 1);
+
+  // Redirect back to previous page
+  if(isset($_SESSION['url'])) {
+    redirect($_SESSION['url']);
+  } else {
+    redirect("AdminAppointment.php");
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -152,7 +166,7 @@ if(isset($_GET['vaccinationID'])) {
               Set Administered
             </button>
             <button type="button" class="btn btn-secondary ml-3">Cancel</button>
-            <input type="hidden" id="administeredRemarks" />
+            <input type="hidden" id="administeredRemarks" name="administeredRemarks" />
           </form>
         </div>
       </div>
