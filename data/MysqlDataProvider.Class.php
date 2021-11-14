@@ -270,17 +270,53 @@ class MysqlDataProvider {
         return $data;
     }
 
-    // public function get_terms() {
+    // Update the status and remarks of a vaccination based on the vaccinationID
+    // USED in AdministerAppt.php
+    function updateVaccinationStatus($vaccinationID, $status, $remarks) {
+        $db = $this->connect();
 
-    // }
+        if($db == null) {
+            return;
+        }
 
-    // public function get_term($term) {
+        $sql = 'UPDATE Vaccination SET status = :status,
+                remarks = :remarks WHERE vaccinationID = :vaccinationID';
 
-    // }
+        $smt = $db->prepare($sql);
 
-    // public function add_term($term, $definition) {
+        $smt->execute([
+            ':vaccinationID' => $vaccinationID,
+            ':status' => $status,
+            ':remarks' => $remarks
+        ]);
 
-    // }
+        $smt = null;
+        $db = null;
+    }
+
+    // Update the quantity available and quantity administered based on the batchNo
+    // USED in AdministerAppt.php
+    function updateBatchQuantity($batchNo, $quantityAvailable, $quantityAdministered) {
+        $db = $this->connect();
+
+        if($db == null) {
+            return;
+        }
+
+        $sql = 'UPDATE Batch SET quantityAvailable = :quantityAvailable,
+                quantityAdministered = :quantityAdministered WHERE batchNo = :batchNo';
+
+        $smt = $db->prepare($sql);
+
+        $smt->execute([
+            ':batchNo' => $batchNo,
+            ':quantityAvailable' => $quantityAvailable,
+            ':quantityAdministered' => $quantityAdministered
+        ]);
+
+        $smt = null;
+        $db = null;
+    }
 
     private function connect() {
         try {
