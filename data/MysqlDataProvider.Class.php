@@ -7,6 +7,58 @@ class MysqlDataProvider {
         $this->source = $source;
     }
 
+    function getVaccinationByUsername($username){
+
+        $db = $this->connect();
+
+        if($db == null) {
+            return;
+        }
+
+        $sql = ('SELECT * FROM Vaccination WHERE username = :username');
+        $smt = $db->prepare($sql);
+
+        $smt->execute([
+            ':username' => $username
+        ]);
+
+        $data = $smt->fetchObject('Vaccination');
+        $smt = null;
+        $db = null;
+
+        return $data;
+
+
+    }
+
+    function getVaccination($vaccinationID, $appointmentDate, $remarks, $status, $batchNo, $username){
+
+        $db = $this->connect();
+
+        if($db == null) {
+            return;
+        }
+
+        $sql = 'INSERT INTO Vaccination (vaccinationID, appointmentDate, remarks, status, batchNo, username)
+                VALUES (:vaccinationID, :appointmentDate, :remarks, 
+                :status, :batchNo, :username)';
+
+        $smt = $db->prepare($sql);
+
+        $smt->execute([
+            ':vaccinationID' => $vaccinationID,
+            ':appointmentDate' => $appointmentDate,
+            ':remarks' => $remarks,
+            ':status' => $status,
+            ':batchNo' => $batchNo,
+            ':username' => $username
+        ]);
+
+        $smt = null;
+        $db = null;
+
+    }
+
     function signUpPatient($username, $password, $fullName, $email, $ICPassport) {
         $db = $this->connect();
 
@@ -81,6 +133,32 @@ class MysqlDataProvider {
         return $data;
     }
 
+    function getBatchesByVaccineCentre($vaccineID, $centreName){
+
+        $db = $this->connect();
+
+        if($db == null) {
+            return [];
+        }
+
+        $sql = ('SELECT * FROM Batch WHERE vaccineID = :vaccineID AND centreName = :centreName');
+
+        $query = $db->prepare($sql);
+
+        $query->execute([
+            ':vaccineID' => $vaccineID,
+            ':centreName' => $centreName
+        ]);
+
+        $data = $query->fetchAll(PDO::FETCH_CLASS, 'Batch');
+
+        $query = null;
+        $db = null;
+
+        return $data;
+
+    }
+
 
     function insertCentre($centreName, $address) {
         $db = $this->connect();
@@ -103,6 +181,31 @@ class MysqlDataProvider {
         $db = null;
     }
 
+    function getBatchesByVaccineID($vaccineID){
+
+        $db = $this->connect();
+
+        if($db == null) {
+            return [];
+        }
+
+        $sql = ('SELECT * FROM Batch WHERE vaccineID = :vaccineID');
+
+        $query = $db->prepare($sql);
+
+        $query->execute([
+            ':vaccineID' => $vaccineID
+        ]);
+
+        $data = $query->fetchAll(PDO::FETCH_CLASS, 'Batch');
+
+        $query = null;
+        $db = null;
+
+        return $data;
+        
+    }
+
 
     function getCentres(){
         $db = $this->connect();
@@ -120,6 +223,8 @@ class MysqlDataProvider {
 
         return $data;
     }
+
+
 
 
     // Checks if user is valid. Returns user object if exists, else returns false.
@@ -407,6 +512,7 @@ class MysqlDataProvider {
         $smt = null;
         $db = null;
     }
+
 
     private function connect() {
         try {

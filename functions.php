@@ -9,9 +9,9 @@ function redirectToHome() {
     if(isset($_SESSION['user'])) {
         $user = unserialize($_SESSION['user']);
         if($user instanceof Administrator) {
-            header("Location: AdminHome.php");
+            redirect("AdminHome.php");
         } else {
-            header("Location: PatientProfile.php");
+            redirect("PatientDashboard.php");
         }
     }
 }
