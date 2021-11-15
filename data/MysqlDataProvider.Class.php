@@ -32,6 +32,78 @@ class MysqlDataProvider {
         $db = null;
     }
 
+
+    function signUpAdmin($username, $password, $fullName, $email, $staffID, $centreName) {
+        $db = $this->connect();
+
+        if($db == null) {
+            return;
+        }
+
+        $sql = 'INSERT INTO Administrator (username, password, fullName, email, staffID, centreName)
+                VALUES (:username, :password, :fullName, 
+                :email, :staffID, :centreName)';
+
+        $smt = $db->prepare($sql);
+
+        $smt->execute([
+            ':username' => $username,
+            ':password' => $password,
+            ':fullName' => $fullName,
+            ':email' => $email,
+            ':staffID' => $staffID,
+            ':centreName' => $centreName
+        ]);
+
+        $smt = null;
+        $db = null;
+    }
+
+
+    function getCentreByName($centreName) {
+        $db = $this->connect();
+
+        if($db == null) {
+            return;
+        }
+
+        $sql = ('SELECT * FROM HealthcareCentre WHERE centreName = :centreName');
+        $smt = $db->prepare($sql);
+
+        $smt->execute([
+            ':centreName' => $centreName
+        ]);
+
+        $data = $smt->fetchObject('HealthcareCentre');
+        $smt = null;
+        $db = null;
+
+        return $data;
+    }
+
+
+    function insertCentre($centreName, $address) {
+        $db = $this->connect();
+
+        if($db == null) {
+            return;
+        }
+
+        $sql = 'INSERT INTO HealthcareCentre (centreName, address)
+                VALUES (:centreName, :address)';
+
+        $smt = $db->prepare($sql);
+
+        $smt->execute([
+            ':centreName' => $centreName,
+            ':address' => $address
+        ]);
+
+        $smt = null;
+        $db = null;
+    }
+
+
     // Checks if user is valid. Returns user object if exists, else returns false.
     // USED in Login.php
     function login($username, $password) {
