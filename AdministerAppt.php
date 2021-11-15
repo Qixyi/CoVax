@@ -68,7 +68,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             height="50"
             width="50"
           />
-          <p class="h1 align-middle d-inline-block">PCVS</p>
+          <p class="h1 align-middle d-inline-block">CoVax</p>
         </a>
         <a href="Logout.php"
           ><button type="button" class="btn btn-outline-warning">
@@ -77,6 +77,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         >
       </div>
     </div>
+
 
     <!-- Main Content -->
     <div class="container">
@@ -93,7 +94,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                   echo "<a href='AdminAppointment.php'>All Appointments</a>";
                 }
               ?>
-              
             </li>
             <li class="breadcrumb-item active" aria-current="page">
               Record Vaccination Administered
@@ -106,7 +106,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       <h3 class="text-center mb-3">Record Vaccination Administered</h3>
       <br/>
 
-      <!-- Batch Details -->
+      <!-- Vaccination Details -->
       <div class="container">
         <div class="row offset-4">
           <h5 class="mt-4">Patient Details</h5>
@@ -114,14 +114,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h6>Full name:</h6>
           </div>
           <div class="col-md-3">
-            <h6 id="fullName"><?php echo $patientObj->getFullName(); ?></h6>
+            <h6><?php echo $patientObj->getFullName(); ?></h6>
           </div>
           <div class="w-100"></div>
           <div class="col-md-3">
             <h6>IC/Passport:</h6>
           </div>
           <div class="col-md-3">
-            <h6 id="icPassport"><?php echo $patientObj->getICPassport(); ?></h6>
+            <h6><?php echo $patientObj->getICPassport(); ?></h6>
           </div>
           <div class="w-100"></div>
 
@@ -130,14 +130,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h6>Batch No:</h6>
           </div>
           <div class="col-md-3">
-            <h6 id="icPassport"><?php echo $batchObj->getBatchNo();?></h6>
+            <h6><?php echo $batchObj->getBatchNo();?></h6>
           </div>
           <div class="w-100"></div>
           <div class="col-md-3">
             <h6>Expiry Date:</h6>
           </div>
           <div class="col-md-3">
-            <h6 id="icPassport"><?php echo $batchObj->getExpiryDate(); ?></h6>
+            <h6><?php echo $batchObj->getExpiryDate(); ?></h6>
           </div>
           <div class="w-100"></div>
 
@@ -146,14 +146,23 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h6>Vaccine Name:</h6>
           </div>
           <div class="col-md-3">
-            <h6 id="icPassport"><?php echo $vaccineObj->getVaccineName(); ?></h6>
+            <h6><?php echo $vaccineObj->getVaccineName(); ?></h6>
           </div>
           <div class="w-100"></div>
           <div class="col-md-3">
             <h6>Manufacturer:</h6>
           </div>
           <div class="col-md-3">
-            <h6 id="icPassport"><?php echo $vaccineObj->getManufacturer(); ?></h6>
+            <h6><?php echo $vaccineObj->getManufacturer(); ?></h6>
+          </div>
+
+          <div class="w-100"></div>
+          <br>
+          <div class="col-md-3 light-cyan-color">
+            <h5>Status:</h5>
+          </div>
+          <div class="col-md-3 light-cyan-color">
+            <h5 class="text-capitalize"><?php echo $vaccinationObj->getStatus(); ?></h5>
           </div>
 
           <div class="w-100"></div>
@@ -165,7 +174,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             >
               Set Administered
             </button>
-            <button type="button" class="btn btn-secondary ml-3">Cancel</button>
+            <button type="button" class="btn btn-secondary ml-3">
+              <a class="link-light text-decoration-none "
+              href="<?php 
+              if(isset($_SESSION['url'])) {
+                echo $_SESSION['url'];
+              } else {
+                echo "AdminAppointment.php";
+              } ?>"
+              >
+              Cancel
+              </a>
+            </button>
             <input type="hidden" id="administeredRemarks" name="administeredRemarks" />
           </form>
         </div>

@@ -52,7 +52,7 @@ $_SESSION['url'] = "AdminAppointment.php?batchNo=" . $_GET['batchNo'];
     <div class="navbar sticky-top top-nav-blue">
         <div class="container-fluid">
             <a class="navbar-brand link-light" href="AdminHome.php"><img src="covidvax.png" alt="This is the CoVax logo" height="50" width="50">
-				<p class="h1 align-middle d-inline-block"> PCVS</p></a>
+				<p class="h1 align-middle d-inline-block"> CoVax</p></a>
             <a href="Logout.php"><button type="button" class="btn btn-outline-warning">Log Out</button></a>
         </div>
     </div>
@@ -75,6 +75,8 @@ $_SESSION['url'] = "AdminAppointment.php?batchNo=" . $_GET['batchNo'];
 
 		<!-- Batch Details -->
 		<div class="text-center">
+			<h3 class="d-md-inline"><?php echo $user->getCentreName(); ?></h3>
+			<br><br>
 			<h3 class="d-md-inline">Batch No: </h3>
 			<h3 class="d-md-inline"><?php echo $batchObj->getBatchNo(); ?></h3>
 			<br>

@@ -3,6 +3,8 @@ session_start();
 
 require_once("config.php");
 
+isUserLoggedIn();
+
 $user = unserialize($_SESSION['user']);
 $database = new MysqlDataProvider(CONFIG['db']);
 $status = true;
@@ -16,13 +18,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   $vaccineID = trim($_POST['vaccineName']);
   $centreName = $user->getCentreName();
 
-  if($database->validBatchNo($batchNo)){
-      $database->recordNewBatch($batchNo, $expiryDate, $qtyAvailable, $qtyAdministered, $vaccineID, $centreName);
-      $database = null;
-      header("Location: AdminHome.php");
-      exit;
+  if(empty($database->getBatchByNo($batchNo))){
+    $database->recordNewBatch($batchNo, $expiryDate, $qtyAvailable, $qtyAdministered, $vaccineID, $centreName);
+    $database = null;
+    header("Location: AdminHome.php");
+    exit();
+
   } else {
-      $status = false;
+    $status = false;
   } 
 }
 
@@ -80,10 +83,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <select class="form-select" id="vaccineName" name="vaccineName" required>
                       <option selected disabled value="">Choose...</option>
                       <?php $vaccineArray = $database->getVaccines();
-                        foreach($vaccineArray as $vaccine):?>
-                          <option value="<?php echo $vaccine->getVaccineID(); ?>">
-                          <?php echo $vaccine->getVaccineName(); ?></option>;
-                      <?php endforeach;?>
+                        if (!empty($vaccineArray)):
+                          foreach($vaccineArray as $vaccine):?>
+
+                            <option value="<?php echo $vaccine->getVaccineID(); ?>">
+                            <?php echo $vaccine->getVaccineName(); ?></option>;
+
+                      <?php
+                        endforeach;
+                        endif;
+                      ?>
                   </select>
                   <div class="invalid-feedback">
                     Please select a vaccine.
@@ -112,7 +121,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                       </div>
                       <span class="text-danger">
                         <?php
-                        if($status == false){
+                        if($status === false){
                           echo "Please enter a new Batch No. Existing Batch No is already chosen.";
                           unset($status);
                         }

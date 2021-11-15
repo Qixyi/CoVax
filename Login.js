@@ -1,3 +1,21 @@
+//Enables log in button when all fields are filled (NOT NEEDED NOW)
+// var username = document.getElementById("username");
+// var password = document.getElementById("password");
+// var loginBtn = document.getElementById("loginBtn");
+// loginBtn.disabled = true;
+
+// username.addEventListener('keyup', isEmpty);
+// password.addEventListener('keyup', isEmpty);
+
+// function isEmpty(){
+//   if(checkUserName() && checkPassword()) {
+//     loginBtn.disabled = false;
+//   } else {
+//     loginBtn.disabled = true;
+//   }
+// }
+
+
 // Log in button events
 var loginBtn = document.getElementById("loginBtn");
 loginBtn.addEventListener("click", function (event) {

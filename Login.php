@@ -5,9 +5,25 @@
     require_once("config.php");
 
     $database = new MysqlDataProvider(CONFIG['db']);
+
+    if(isset($_SESSION['user'])) {
+        redirectToHome();
+    }
+
     $status = true;
+
+    // if(isset($_SESSION['user'])) {
+    //     $_SESSION['user'] = serialize($loggedInUser);
+    //     if($_SESSION['user'] instanceof Administrator) {
+    //         header("Location: AdminHome.php");
+    //         exit();
+    //     } else {
+    //         header("Location: PatientProfile.php");
+    //         exit();
+    //     }
+    // }
     
-    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $username = trim($_POST["username"]);
         $password = trim($_POST["password"]);
 
@@ -17,14 +33,15 @@
 
         if($loggedInUser != false){
             $_SESSION['user'] = serialize($loggedInUser);
+            redirectToHome();
 
-            if($loggedInUser instanceof Administrator) {
-                header("Location: AdminHome.php");
-                exit();
-            } else {
-                header("Location: PatientProfile.php");
-                exit();
-            }
+            // if($loggedInUser instanceof Administrator) {
+            //     header("Location: AdminHome.php");
+            //     exit();
+            // } else {
+            //     header("Location: PatientProfile.php");
+            //     exit();
+            // }
                 
         } else {
             $status = false;
@@ -66,7 +83,7 @@
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-12 mb-lg-4 mb-3 px-md-5"> 
-                                <form method="POST" class="px-md-5 px-2 needs-validation" novalidate>
+                                <form method="POST" class="px-md-5 px-2 needs-validation" id="loginForm" novalidate>
                                     <h1 class="text-md-start text-center">Login</h1>
                                     <!--Login Form--> 
                                     <div class="form-floating-mb-3">

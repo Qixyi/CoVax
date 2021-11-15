@@ -39,7 +39,7 @@ $database = new MysqlDataProvider(CONFIG['db']);
 
         <section class="my-5">
             <a href="AdminAddBatch.php"><button type="button" class="btn top-nav-blue text-white">Add Batch</button></a>
-            <p class="d-inline-block"><?php echo count($database->getBatches($user->getCentreName())) ?> Batch; 14 Pending Appointments</p>
+            <p class="h4 ms-3 d-inline-block"><?php echo count($database->getBatches($user->getCentreName())) ?> Batch</p>
         </section>
 
 
@@ -63,7 +63,23 @@ $database = new MysqlDataProvider(CONFIG['db']);
                 <tr data-href="AdminAppointment.php?batchNo=<?php echo $batch->getBatchNo(); ?>">
                   <th scope="row"><?php echo $batch->getBatchNo(); ?></th>
                   <td><?php echo $vaccine->getVaccineName(); ?></td>
-                  <td>3</td>
+                  <td>
+                    <?php 
+                      $vaccinationArray = $database->getVaccinations($batch->getBatchNo());
+
+                      if(empty($vaccinationArray)) {
+                        echo "0";
+                      } else {
+                        $numPending = 0;
+                        foreach ($vaccinationArray as $vax) {
+                          if(strcasecmp($vax->getStatus(), "pending") == 0){
+                            $numPending++;
+                          }
+                        }
+                          echo $numPending;
+                        }
+                    ;?>
+                  </td>
                 </tr>
               <?php 
                 endforeach;
@@ -72,11 +88,6 @@ $database = new MysqlDataProvider(CONFIG['db']);
                   $noBatch = true;
                 endif;
               ?>
-              <!-- <tr data-href="AdminAppointment.html">
-                <th scope="row">B0001</th>
-                <td>Pfizer</td>
-                <td>3</td>
-              </tr> -->
             </tbody>
           </table>
 
