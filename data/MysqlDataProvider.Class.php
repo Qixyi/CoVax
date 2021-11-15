@@ -104,6 +104,24 @@ class MysqlDataProvider {
     }
 
 
+    function getCentres(){
+        $db = $this->connect();
+
+        if($db == null) {
+            return [];
+        }
+
+        $query = $db->query('SELECT * FROM HealthcareCentre');
+
+        $data = $query->fetchAll(PDO::FETCH_CLASS, 'HealthcareCentre');
+        
+        $query = null;
+        $db = null;
+
+        return $data;
+    }
+
+
     // Checks if user is valid. Returns user object if exists, else returns false.
     // USED in Login.php
     function login($username, $password) {
@@ -150,7 +168,7 @@ class MysqlDataProvider {
         $db = $this->connect();
 
         if($db == null) {
-            return []; // need to check this!
+            return [];
         }
 
         $query = $db->query('SELECT * FROM Vaccine');
