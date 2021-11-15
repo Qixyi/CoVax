@@ -37,3 +37,11 @@ allConfirmedBtn.forEach(btn => {
         window.location.href = "AdministerAppt.php?vaccinationID=" + btn.value;
     })
 })
+
+const allPendingBtn = document.getElementsByName("statusPending");
+
+allPendingBtn.forEach(btn => {
+    btn.addEventListener("click", () => {
+        window.location.href = "ConfirmVaccinationAppointment.php?vaccinationID=" + btn.value;
+    })
+})
