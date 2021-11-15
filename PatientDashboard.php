@@ -7,6 +7,7 @@ isUserLoggedIn();
 $user = unserialize($_SESSION['user']);
 $database = new MysqlDataProvider(CONFIG['db']);
 //print_r($user);
+
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +31,7 @@ $database = new MysqlDataProvider(CONFIG['db']);
     <div class="container-fluid">
         <a class="navbar-brand link-light"><img src="covidvax.png" alt="This is the CoVax logo" height="50" width="50">
     <p class="h1 align-middle d-inline-block"> CoVax</p></a>
-        <a href="Logout.php"><button type="button" class="btn btn-outline-warning">Logout</button></a>
+        <a href="Logout.php"><button type="button" class="btn btn-outline-warning">Log Out</button></a>
     </div>
     </div>  
 
@@ -52,8 +53,13 @@ $database = new MysqlDataProvider(CONFIG['db']);
             </div>
 
             <div class="text-center mt-5">
-                <a href="RequestVaccinationAppointmentVN.php"><button type="button" 
-                    class="btn btn-primary btn-lg">Request Vaccination Appointment</button></a>
+                <?php
+                    $apptArray = $database->getVaccinationByUsername($user->getUsername());
+                    if(empty($apptArray)) {
+                        echo '<a href="RequestVaccinationAppointmentVN.php"><button type="button" 
+                        class="btn btn-primary btn-lg">Request Vaccination Appointment</button></a>';
+                    }
+                ?>
             </div>
 
     </div>

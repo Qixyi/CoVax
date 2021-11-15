@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST"){
   $appointmentDate = $_POST["appointmentDate"];
   unset ($_POST["appointmentDate"]);
   $database->getVaccination("", $appointmentDate, "", "pending" , $batchNo, $user->getUsername());
-  redirect("PatientDetails.php");
+  redirect("PatientDashboard.php");
   
 }
 ?>
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST"){
     <div class="container-fluid">
         <a class="navbar-brand link-light" href="PatientDashboard.php"><img src="covidvax.png" alt="This is the CoVax logo" height="50" width="50">
     <p class="h1 align-middle d-inline-block"> CoVax</p></a>
-        <a href="Login.php"><button type="button" class="btn btn-outline-warning">Login</button></a>
+        <a href="Logout.php"><button type="button" class="btn btn-outline-warning">Log Out</button></a>
     </div>
     </div>  
 
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST"){
         </div>
 
          <!-- Page Heading -->
-       <h3 class="text-center mb-3">4. Select a expiry date</h3>
+       <h3 class="text-center mb-3">4. Select a appointment date</h3>
        <br>
 <form method = "POST">
       <div class= "row mb-3">

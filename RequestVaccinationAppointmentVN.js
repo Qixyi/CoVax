@@ -23,7 +23,7 @@ requestBtn.addEventListener("click", function (event) {
 
     var statusArray = [];
     statusArray.push(checkButtonVaccine());
-    alert(statusArray);
+
     if (statusArray.includes(false)) {
       event.preventDefault();
       event.stopPropagation();
